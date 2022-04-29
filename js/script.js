@@ -127,6 +127,7 @@ function deleteProducts(id){
 
 function createInputs(){
   $createInputs.classList.toggle('active')
+  $header.classList.remove('active')
 }
 
 function createProducts(){
@@ -182,7 +183,7 @@ function updateProduct(id){
 
 $btnHeader.addEventListener('click', e =>{
   e.preventDefault()
-
+  $createInputs.classList.remove('active')
   $header.classList.add('active')
 })
 

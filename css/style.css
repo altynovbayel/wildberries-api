@@ -137,9 +137,23 @@ body{
 }
 .btn_header{
   display: none;
+  font-size: 20px;
+  background-color: white;
+  color: #501177;
+  border-radius: 10px;
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
 }
 .btn_close{
   display: none;
+  font-size: 20px;
+  background-color: white;
+  color: #501177;
+  border-radius: 10px;
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
 }
 
 @media (max-width: 730px) {
@@ -165,5 +179,8 @@ body{
     flex-wrap: wrap;
     width: 50%;
     text-align: center;
+  }
+  .row{
+    margin-top: 60px;
   }
 }
