@@ -14,13 +14,33 @@ const $price = document.querySelector('.price')
 const $createBtn = document.querySelector('.createBtn')
 
 const logOut = () => {
-  
   localStorage.clear()
   open('./auth.html', '_self')
 }
 
 const base = 'https://pbasics.pythonanywhere.com'
 const userToken = localStorage.getItem('authToken')
+
+const request = {
+  get: (endPoint) => {
+    return fetch(`${base}/${endPoint}/`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+      }
+    })
+    .then(res => res.json())
+  },
+  delete:(id)  => {
+    return fetch(`${base}/products/delete/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Token ${userToken}`
+      }
+    })
+  }
+}
 
 
 window.addEventListener('load', () => {
@@ -32,13 +52,7 @@ window.addEventListener('load', () => {
 })
 
 function getCategory(){
-  fetch(`${base}/category/`, {
-    method:'GET',
-    headers:{
-      'Content-type': 'application/json',
-    }
-  })
-  .then(res => res.json())
+  request.get('category')
   .then(r => categoryTemplate(r))
 }
 
@@ -66,13 +80,7 @@ function routeCategory(id){
 // get products
 
 function getProducts(){
-  fetch(`${base}/products`,{
-    method: 'GET',
-    headers: {
-      'Content-type': 'application/json',
-    }
-  })
-  .then(r => r.json())
+  request.get('products')
   .then(res => {
     res.reverse()
     productTemplate(res)
@@ -80,7 +88,6 @@ function getProducts(){
 }
 
 function productTemplate(base){
-  console.log(base);
   const products = base.map(({ title, description, image, image_url, price, id}) => {
     return `
       <div class="card">   
@@ -112,13 +119,7 @@ function productTemplate(base){
 // delete products
 
 function deleteProducts(id){
-  fetch(`${base}/products/delete/${id}`, {
-    method:'DELETE',
-    headers: {
-      'Content-type': 'application/json',
-      'Authorization': `Token ${userToken}`
-    }
-  })
+  request.delete(id)
   .then(getProducts)
 
 }
@@ -162,7 +163,6 @@ $createBtn.addEventListener('click', e => {
 
 
 function updateProduct(id){
-  console.log(id);
   fetch(`${base}/products/update/${id}`,{
     method:'PATCH',
     headers:{
@@ -170,11 +170,11 @@ function updateProduct(id){
       'Authorization': `Token ${userToken}`
     },
     body: JSON.stringify({
-      title: prompt('new Title', 'defoult title'),
-      description: prompt('desc', 'deafoult desc'),
-      price: +prompt('price', 10),
-      image_url: prompt('img url', 'https://manofmany.com/wp-content/uploads/2020/10/Crocs-x-Nike-Air-Force-1-4.jpg'),
-      category: +prompt('category', 1),
+      title: prompt('new Title'),
+      description: prompt('desc'),
+      price: +prompt('price'),
+      image_url: prompt('img url'),
+      category: +prompt('category'),
     })
   })
   .then(res => res.json())
