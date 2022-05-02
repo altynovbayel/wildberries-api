@@ -44,9 +44,8 @@ const request = {
 
 
 window.addEventListener('load', () => {
-  if(!userToken){
-    open('./auth.html', '_self')
-  }
+  !userToken && open('./auth.html', '_self')
+  
   getCategory()
   getProducts()
 })
@@ -121,7 +120,6 @@ function productTemplate(base){
 function deleteProducts(id){
   request.delete(id)
   .then(getProducts)
-
 }
 
 // create products
@@ -163,6 +161,8 @@ $createBtn.addEventListener('click', e => {
 
 
 function updateProduct(id){
+  
+
   fetch(`${base}/products/update/${id}`,{
     method:'PATCH',
     headers:{
